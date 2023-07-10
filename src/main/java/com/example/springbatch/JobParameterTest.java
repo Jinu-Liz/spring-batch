@@ -22,7 +22,7 @@ public class JobParameterTest implements ApplicationRunner {
   @Override
   public void run(ApplicationArguments args) throws Exception {
     JobParameters jobParameters = new JobParametersBuilder()
-      .addString("name", "user1")
+      .addString("name", "user6")
       .addLong("seq", 2L)
       .addDate("date", new Date())
       .addDouble("age", 16.5)
