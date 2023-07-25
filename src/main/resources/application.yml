@@ -27,10 +27,14 @@ spring:
       jdbc-url: jdbc:mysql://localhost:3366/spring_batch?useUnicode=true&characterEncoding=utf8
       username: root
       password: yun0587
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
 
   batch:
+    job:
+      names: ${job.name:NONE}   # 프로그램 변수에 --job.name='job이름' 넣어서 실행
+    #      names: batchJob1 # 하드코딩하여 실행할 수 있음
+      enabled: true    # 스프링부트가 자동으로 실행시키는 것을 막는다.
+
     jdbc:
       initialize-schema: always
-#    job:
-#      enabled: false
+#      table-prefix: SYSYEM_   # 테이블명 앞에 붙이는 내용
