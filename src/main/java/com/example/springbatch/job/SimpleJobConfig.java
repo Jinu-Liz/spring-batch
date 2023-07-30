@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.DefaultJobParametersValidator;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
@@ -24,24 +25,21 @@ public class SimpleJobConfig {
       .start(step1())
       .next(step2())
       .next(step3())
-      .validator(new JobParametersValidator() {
-        @Override
-        public void validate(JobParameters jobParameters) throws JobParametersInvalidException {
+      .validator(new CustomJobParameterValidator())
+//      .validator(new DefaultJobParametersValidator(new String[]{"name", "date"}, new String[]{"count"}))
 
-        }
-      })
-      .preventRestart()
-      .listener(new JobExecutionListener() {
-        @Override
-        public void beforeJob(JobExecution jobExecution) {
-
-        }
-
-        @Override
-        public void afterJob(JobExecution jobExecution) {
-
-        }
-      })
+//      .preventRestart()
+//      .listener(new JobExecutionListener() {
+//        @Override
+//        public void beforeJob(JobExecution jobExecution) {
+//
+//        }
+//
+//        @Override
+//        public void afterJob(JobExecution jobExecution) {
+//
+//        }
+//      })
       .build();
   }
 
