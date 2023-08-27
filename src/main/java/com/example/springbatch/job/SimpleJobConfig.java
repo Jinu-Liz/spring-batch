@@ -28,7 +28,7 @@ public class SimpleJobConfig {
       .validator(new CustomJobParameterValidator())
 //      .validator(new DefaultJobParametersValidator(new String[]{"name", "date"}, new String[]{"count"}))
 
-//      .preventRestart()
+      .preventRestart()   // 실패해도 재시작이 되지 않도록 설정
 //      .listener(new JobExecutionListener() {
 //        @Override
 //        public void beforeJob(JobExecution jobExecution) {
