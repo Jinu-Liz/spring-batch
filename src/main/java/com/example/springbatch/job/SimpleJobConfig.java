@@ -21,7 +21,7 @@ public class SimpleJobConfig {
   @Bean
   public Job batchJob() {
     return jobBuilderFactory.get("batchJob")
-      .incrementer(new RunIdIncrementer())  // 같은 파라미터로 실행 가능하도록
+      .incrementer(new CustomJobParametersIncrementer())  // 같은 파라미터로 실행 가능하도록
       .start(step1())
       .next(step2())
       .next(step3())
@@ -58,6 +58,7 @@ public class SimpleJobConfig {
   public Step step2() {
     return stepBuilderFactory.get("step2")
       .tasklet((stepContribution, chunkContext) -> {
+//        throw new RuntimeException("step2 was failed");
         System.out.println("step2 was executed");
 
         return RepeatStatus.FINISHED;
