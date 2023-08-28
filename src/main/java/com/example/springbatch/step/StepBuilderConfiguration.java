@@ -32,20 +32,22 @@ public class StepBuilderConfiguration {
   public Job batchJob() {
     return jobBuilderFactory.get("batchJob")
       .incrementer(new RunIdIncrementer())  // 같은 파라미터로 실행 가능하도록
-      .start(step1())
+      .start(taskStep())
       .next(step2())
       .next(step3())
       .build();
   }
 
   @Bean
-  public Step step1() {
-    return stepBuilderFactory.get("step1")
+  public Step taskStep() {
+    return stepBuilderFactory.get("taskStep")
       .tasklet((stepContribution, chunkContext) -> {
-        System.out.println("step1 was executed");
+        System.out.println("taskStep was executed");
 
         return RepeatStatus.FINISHED;
       })
+      .allowStartIfComplete(true)   // 성공해도 반복
+      .startLimit(20)   // 반복 횟수
       .build();
   }
 
@@ -62,7 +64,7 @@ public class StepBuilderConfiguration {
   @Bean
   public Step step3() {
     return stepBuilderFactory.get("step3")
-      .partitioner(step1())
+      .partitioner(taskStep())
       .gridSize(2)
       .build();
   }
@@ -90,7 +92,7 @@ public class StepBuilderConfiguration {
 
   private Job job() {
     return jobBuilderFactory.get("job")
-      .start(step1())
+      .start(taskStep())
       .next(step2())
       .next(step3())
       .build();
