@@ -14,10 +14,12 @@ import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -33,8 +35,8 @@ public class StepBuilderConfiguration {
     return jobBuilderFactory.get("batchJob")
       .incrementer(new RunIdIncrementer())  // 같은 파라미터로 실행 가능하도록
       .start(taskStep())
-      .next(step2())
-      .next(step3())
+      .next(chunkStep())
+//      .next(step3())
       .build();
   }
 
@@ -52,12 +54,12 @@ public class StepBuilderConfiguration {
   }
 
   @Bean
-  public Step step2() {
-    return stepBuilderFactory.get("step2")
-      .<String, String> chunk(3)
-      .reader(() -> null)
-      .processor((ItemProcessor<String, String>) s -> null)
-      .writer(items -> {})
+  public Step chunkStep() {
+    return stepBuilderFactory.get("chunkStep")
+      .<String, String> chunk(10)
+      .reader(new ListItemReader<>(Arrays.asList("item1","item2","item3","item4","item5")))
+      .processor((ItemProcessor<String, String>) String::toUpperCase)
+      .writer(items -> items.forEach(System.out::println))
       .build();
   }
 
@@ -85,7 +87,7 @@ public class StepBuilderConfiguration {
 
   private Flow flow() {
     FlowBuilder<Flow> flowBuilder = new FlowBuilder<>("flow");
-    flowBuilder.start(step2()).end();
+    flowBuilder.start(chunkStep()).end();
 
     return flowBuilder.build();
   }
@@ -93,7 +95,7 @@ public class StepBuilderConfiguration {
   private Job job() {
     return jobBuilderFactory.get("job")
       .start(taskStep())
-      .next(step2())
+      .next(chunkStep())
       .next(step3())
       .build();
   }
