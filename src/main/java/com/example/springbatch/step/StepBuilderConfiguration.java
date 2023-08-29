@@ -34,10 +34,10 @@ public class StepBuilderConfiguration {
   @Bean
   public Job batchJob() {
     return jobBuilderFactory.get("batchJob")
-      .incrementer(new RunIdIncrementer())  // 같은 파라미터로 실행 가능하도록
+//      .incrementer(new RunIdIncrementer())  // 같은 파라미터로 실행 가능하도록
       .start(taskStep())
       .next(customTasklet())
-      .next(chunkStep())
+//      .next(chunkStep())
 //      .next(step3())
       .build();
   }
@@ -50,8 +50,7 @@ public class StepBuilderConfiguration {
 
         return RepeatStatus.FINISHED;
       })
-      .allowStartIfComplete(true)   // 성공해도 반복
-      .startLimit(3)   // 반복 횟수
+//      .allowStartIfComplete(true)   // 성공해도 반복
       .build();
   }
 
@@ -60,6 +59,7 @@ public class StepBuilderConfiguration {
     return stepBuilderFactory.get("customTask")
 //      .tasklet(new CustomTasklet())
       .tasklet((stepContribution, chunkContext) -> {throw new RuntimeException();})
+      .startLimit(3)   // 반복 횟수. 해당 횟수가 넘으면 Step이 동작하지 않는다. 근데 Job에서 '.incrementer(new RunIdIncrementer())'랑 같이 쓰면 동작하지 않는듯..
       .build();
   }
 
