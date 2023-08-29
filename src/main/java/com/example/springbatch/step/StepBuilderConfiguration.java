@@ -2,6 +2,7 @@ package com.example.springbatch.step;
 
 import com.example.springbatch.job.CustomJobParameterValidator;
 import com.example.springbatch.job.CustomJobParametersIncrementer;
+import com.example.springbatch.tasklet.CustomTasklet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
@@ -35,6 +36,7 @@ public class StepBuilderConfiguration {
     return jobBuilderFactory.get("batchJob")
       .incrementer(new RunIdIncrementer())  // 같은 파라미터로 실행 가능하도록
       .start(taskStep())
+      .next(customTasklet())
       .next(chunkStep())
 //      .next(step3())
       .build();
@@ -49,7 +51,15 @@ public class StepBuilderConfiguration {
         return RepeatStatus.FINISHED;
       })
       .allowStartIfComplete(true)   // 성공해도 반복
-      .startLimit(20)   // 반복 횟수
+      .startLimit(3)   // 반복 횟수
+      .build();
+  }
+
+  @Bean
+  public Step customTasklet() {
+    return stepBuilderFactory.get("customTask")
+//      .tasklet(new CustomTasklet())
+      .tasklet((stepContribution, chunkContext) -> {throw new RuntimeException();})
       .build();
   }
 
