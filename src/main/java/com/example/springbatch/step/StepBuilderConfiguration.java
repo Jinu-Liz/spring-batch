@@ -50,7 +50,7 @@ public class StepBuilderConfiguration {
 
         return RepeatStatus.FINISHED;
       })
-//      .allowStartIfComplete(true)   // 성공해도 반복
+      .allowStartIfComplete(true)   // 성공해도 반복
       .build();
   }
 
