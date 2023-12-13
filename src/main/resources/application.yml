@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: mysql
+    active: mariadb
 
 ---
 spring:
@@ -21,13 +21,12 @@ spring:
 spring:
   config:
     activate:
-      on-profile: mysql
+      on-profile: mariadb
   datasource:
-    hikari:
-      jdbc-url: jdbc:mysql://localhost:3366/spring_batch?useUnicode=true&characterEncoding=utf8
-      username: root
-      password: yun0587
-      driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/spring_batch?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: yun0587
+    driver-class-name: org.mariadb.jdbc.Driver
 
   batch:
     job:
@@ -36,5 +35,5 @@ spring:
       enabled: true    # 스프링부트가 자동으로 실행시키는 것을 막는다.
 
     jdbc:
-      initialize-schema: always
+      initialize-schema: never
 #      table-prefix: SYSYEM_   # 테이블명 앞에 붙이는 내용
