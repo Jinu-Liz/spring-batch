@@ -56,14 +56,20 @@ public class JobStepConfiguration {
   @Bean
   public Step step1() {
     return stepBuilderFactory.get("step1")
-      .tasklet(((stepContribution, chunkContext) -> RepeatStatus.FINISHED))
+      .tasklet(((stepContribution, chunkContext) -> {
+//        throw new RuntimeException("step1 was failed");
+        return RepeatStatus.FINISHED;
+      }))
       .build();
   }
 
   @Bean
   public Step step2() {
-    return stepBuilderFactory.get("step1")
-      .tasklet(((stepContribution, chunkContext) -> RepeatStatus.FINISHED))
+    return stepBuilderFactory.get("step2")
+      .tasklet(((stepContribution, chunkContext) -> {
+        throw new RuntimeException("step2 was failed");
+//        return RepeatStatus.FINISHED;
+      }))
       .build();
   }
 
