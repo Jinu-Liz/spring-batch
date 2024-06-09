@@ -1,4 +1,4 @@
-package com.example.springbatch.flow;
+package com.example.springbatch.flow.transition;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.ExitStatus;
