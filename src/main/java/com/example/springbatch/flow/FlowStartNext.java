@@ -11,6 +11,9 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Flow에서 start와 next 사용
+ */
 @RequiredArgsConstructor
 @Configuration
 public class FlowStartNext {
