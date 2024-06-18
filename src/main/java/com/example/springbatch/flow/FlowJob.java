@@ -12,6 +12,9 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * FlowJob 예제
+ */
 @RequiredArgsConstructor
 @Configuration
 public class FlowJob {
